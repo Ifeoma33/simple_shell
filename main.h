@@ -9,6 +9,5 @@
 
 /* Prototypes used */
 char *strtok(char *str, const char *delim);
-
-
+char *_strtok(char *str, char *delim);
 #endif
