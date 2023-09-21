@@ -5,45 +5,57 @@
 #include <sys/wait.h>
 
 /**
- * execute_command - Execute a user-provided command.
+ * execute_command - Executes a user-provided command.
  * @cmd: The command to execute.
  * @args: An array of arguments for the command.
- *
- * This function forks a new process to execute the given command with the
- * provided arguments. It handles both the child and parent processes,
- * waiting for the child to complete its execution.
  *
  * Return: (0) on success, (-1) on failure.
  */
 int execute_command(char *cmd, char **args)
 {
-	pid_t child_pid;
-	int status;
+    pid_t child_pid;
+    int status;
 
-	if (cmd == NULL)
-		return (-1);
+    if (cmd == NULL)
+        return -1;
 
-	child_pid = fork();
+    child_pid = fork();
 
-	if (child_pid == -1)
-	{
-		perror("fork");
-		return (-1);
-	}
+    if (child_pid == -1)
+    {
+        perror("fork");
+        return -1;
+    }
 
-	if (child_pid == 0)
-	{
-		if (execvp(cmd, args) == -1)
-		{
-			perror("execvp");
-			exit(EXIT_FAILURE);
-		}
-	}
-	else
-	{
-		wait(&status);
-	}
+    if (child_pid == 0)
+    {
+        if (cmd[0] != '/')
+        {
+            /* Prepend /bin/ to the command if it's not an absolute path */
+            char cmd_with_path[256];
+            snprintf(cmd_with_path, sizeof(cmd_with_path), "/bin/%s", cmd);
+            if (execvp(cmd_with_path, args) == -1)
+            {
+                perror("execvp");
+                _exit(EXIT_FAILURE);
+            }
+        }
+        else
+        {
+            /* Execute the command */
+            if (execvp(cmd, args) == -1)
+            {
+                perror("execvp");
+                _exit(EXIT_FAILURE);
+            }
+        }
+    }
+    else
+    {
+        /* Wait for the child process to finish */
+        wait(&status);
+    }
 
-	return (0);
+    return 0;
 }
 

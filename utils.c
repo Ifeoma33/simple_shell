@@ -8,7 +8,7 @@
  */
 void prompt(void)
 {
-	printf("$ ");
+    printf("$ ");
 }
 
 /**
@@ -18,24 +18,26 @@ void prompt(void)
  */
 char *read_line(void)
 {
-	char *line = NULL;
-	size_t len = 0;
-	ssize_t read;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
 
-	read = getline(&line, &len, stdin);
+    read = getline(&line, &len, stdin);
 
-	if (read == -1)
-	{
-		free(line);
-		return (NULL);
-	}
+    if (read == -1)
+    {
+        free(line);
+        return NULL;
+    }
 
-	if (line[read - 1] == '\n')
-	{
-		line[read - 1] = '\0';
-	}
+    /* Remove trailing newline and spaces */
+    while (read > 0 && (line[read - 1] == ' ' || line[read - 1] == '\n'))
+    {
+        line[read - 1] = '\0';
+        read--;
+    }
 
-	return (line);
+    return line;
 }
 
 /**
@@ -46,26 +48,26 @@ char *read_line(void)
  */
 char **tokenize(char *input)
 {
-	char **tokens = malloc(sizeof(char *) * 64);
-	char *token;
-	int index = 0;
+    char **tokens = malloc(sizeof(char *) * 64);
+    char *token;
+    int index = 0;
 
-	if (tokens == NULL)
-	{
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
+    if (tokens == NULL)
+    {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
 
-	token = strtok(input, " ");
-	while (token != NULL)
-	{
-		tokens[index] = token;
-		index++;
+    token = strtok(input, " ");
+    while (token != NULL)
+    {
+        tokens[index] = token;
+        index++;
 
-		token = strtok(NULL, " ");
-	}
-	tokens[index] = NULL;
+        token = strtok(NULL, " ");
+    }
+    tokens[index] = NULL;
 
-	return (tokens);
+    return tokens;
 }
 
