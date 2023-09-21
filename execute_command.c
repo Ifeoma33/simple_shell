@@ -17,33 +17,33 @@
  */
 int execute_command(char *cmd, char **args)
 {
-    pid_t child_pid;
-    int status;
+	pid_t child_pid;
+	int status;
 
-    if (cmd == NULL)
-        return -1;
+	if (cmd == NULL)
+		return (-1);
 
-    child_pid = fork();
+	child_pid = fork();
 
-    if (child_pid == -1)
-    {
-        perror("fork");
-        return -1;
-    }
+	if (child_pid == -1)
+	{
+		perror("fork");
+		return (-1);
+	}
 
-    if (child_pid == 0)
-    {
-        if (execvp(cmd, args) == -1)
-        {
-            perror("execvp");
-            exit(EXIT_FAILURE);
-        }
-    }
-    else
-    {
-        wait(&status);
-    }
+	if (child_pid == 0)
+	{
+		if (execvp(cmd, args) == -1)
+		{
+			perror("execvp");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		wait(&status);
+	}
 
-    return 0;
+	return (0);
 }
 
