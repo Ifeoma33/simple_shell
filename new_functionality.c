@@ -9,25 +9,25 @@
  */
 void list_files_in_path(void)
 {
-    DIR *dir;
-    struct dirent *entry;
+	DIR *dir;
+	struct dirent *entry;
 
-    dir = opendir(".");
-    if (dir == NULL)
-    {
-        perror("opendir");
-        return;
-    }
+	dir = opendir(".");
+	if (dir == NULL)
+	{
+		perror("opendir");
+		return;
+	}
 
-    while ((entry = readdir(dir)) != NULL)
-    {
-        if (entry->d_type == DT_REG)
-        {
-            printf("%s\n", entry->d_name);
-        }
-    }
+	while ((entry = readdir(dir)) != NULL)
+	{
+		if (entry->d_type == DT_REG)
+		{
+			printf("%s\n", entry->d_name);
+		}
+	}
 
-    closedir(dir);
+	closedir(dir);
 }
 
 /**
@@ -35,16 +35,16 @@ void list_files_in_path(void)
  */
 void list_path(void)
 {
-    char path[1024];
+	char path[1024];
 
-    if (getcwd(path, sizeof(path)) != (char *)NULL)
-    {
-        printf("Current directory: %s\n", path);
-    }
-    else
-    {
-        perror("getcwd");
-    }
+	if (getcwd(path, sizeof(path)) != (char *)NULL)
+	{
+		printf("Current directory: %s\n", path);
+	}
+	else
+	{
+		perror("getcwd");
+	}
 }
 
 /**
@@ -52,8 +52,8 @@ void list_path(void)
  */
 void exit_shell(void)
 {
-    printf("Exiting the shell.\n");
-    exit(0);
+	printf("Exiting the shell.\n");
+	exit(0);
 }
 
 /**
@@ -61,13 +61,13 @@ void exit_shell(void)
  */
 void print_environment(void)
 {
-    extern char **environ;
-    char **env = environ;
+	extern char **environ;
+	char **env = environ;
 
-    while (*env)
-    {
-        printf("%s\n", *env);
-        env++;
-    }
+	while (*env)
+	{
+		printf("%s\n", *env);
+		env++;
+	}
 }
 
