@@ -1,29 +1,48 @@
-#include "shell.h"
-#include <stdio.h>
+#include "holberton.h"
+/**
+ * execute_proc - similar to puts in C
+ * @cmd: a pointer the integer we want to set to 402
+ *
+ * Return: int
+ */
+void execute_proc(char **cmd)
+{
 
-void execute_command(char *input) {
-    pid_t pid;
-    char *token = strtok(input, " ");
-    char *args[10];
-    int i = 0;
+	char *parametro = (*(cmd + 1));
+	char *s, *slash = "/";
+	char *o;
 
-    pid = fork();
+	char *vartoprint = *cmd;
+	char *argv[4];
 
-    if (pid == -1) {
-        perror("fork");
-    } else if (pid == 0) {
-        execve(args[0], args, NULL);
-        perror("execve");
-        _exit(1);
-    } else {
-        wait(NULL);
-    }
+	if ((access(cmd[0], F_OK) == 0))
+	{
+		argv[0] = cmd[0];
+		argv[1] = parametro;
+		argv[2] = ".";
+		argv[3] = NULL;
 
-    while (token != NULL) {
-        args[i++] = token;
-        token = strtok(NULL, " ");
-    }
+		if (execve(argv[0], argv, NULL) == -1)
+		{
+			perror("Error");
+		}
+	}
+	else
+	{
+		o = find_command(vartoprint);
 
-    args[i] = NULL;
+		slash = str_concat(o, slash);
+
+		s = str_concat(slash, *cmd);
+
+		argv[0] = s;
+		argv[1] = parametro;
+		argv[2] = ".";
+		argv[3] = NULL;
+
+		if (execve(argv[0], argv, NULL) == -1)
+		{
+			perror("Error");
+		}
+	}
 }
-

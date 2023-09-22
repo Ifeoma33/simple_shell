@@ -1,21 +1,17 @@
-#include "shell.h"
+#include "holberton.h"
 
-int main(void) {
-    char *buffer = NULL;
+/**
+ * main - func with infinite loop
+ * @ac: No use
+ * @av: No use
+ * Return: loop.
+ **/
+int main(int ac, char **av)
+{
+	(void)av;
+	(void)ac;
 
-    while (1) {
-        display_prompt();
-        buffer = read_input();
-
-        if (strcmp(buffer, "exit") == 0) {
-            free(buffer);
-            _exit(0);
-        }
-
-        execute_command(buffer);
-        free(buffer);
-    }
-
-    return 0;
+	signal(SIGINT, controlC);
+	prompt();
+	return (0);
 }
-
