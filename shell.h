@@ -1,15 +1,17 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-/* Function Declarations */
-void prompt(void);
-char *read_line(void);
-char **tokenize(char *input);
-int execute_command(char *cmd, char **args);
-void list_files_in_path(void);
-void list_path(void);
-void exit_shell(void);
-void print_environment(void);
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/wait.h>
+
+#define BUFFER_SIZE 1024
+
+/* Function prototypes */
+void display_prompt(void);
+char* read_input(void);
+void execute_command(char *input);
 
 #endif /* SHELL_H */
 
